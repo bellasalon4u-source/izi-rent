@@ -30,11 +30,13 @@ const properties = [
   },
 ];
 
+const languages = ['EN', 'ES', 'RU', 'UK', 'CS', 'PL', 'IT', 'DE', 'AR', 'HI'];
+
 export default function Page() {
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 2400);
+    const timer = setTimeout(() => setShowSplash(false), 2600);
     return () => clearTimeout(timer);
   }, []);
 
@@ -49,19 +51,22 @@ export default function Page() {
 function SplashScreen() {
   return (
     <section className="splash">
-      <div className="logoBox">
-        <svg viewBox="0 0 240 240" className="logoSvg">
-          <rect className="drawnSquare" x="24" y="24" width="192" height="192" rx="18" />
+      <div className="splashLogo">
+        <svg className="squareSvg" viewBox="0 0 240 240">
+          <path
+            className="squarePath"
+            d="M34 34 H206 Q216 34 216 44 V196 Q216 206 206 206 H34 Q24 206 24 196 V44 Q24 34 34 34"
+          />
         </svg>
 
-        <div className="letters">
-          <span className="letter letterI1">i</span>
-          <span className="letter letterZ">z</span>
-          <span className="letter letterI2">i</span>
+        <div className="splashLetters">
+          <span className="drawLetter iOne">i</span>
+          <span className="drawLetter zLetter">z</span>
+          <span className="drawLetter iTwo">i</span>
         </div>
 
-        <svg viewBox="0 0 170 70" className="roofSvg">
-          <path className="roofPath" d="M18 48 L84 13 L152 48" />
+        <svg className="roofSvg" viewBox="0 0 180 80">
+          <path className="roofDraw" d="M22 54 L90 18 L158 54" />
         </svg>
       </div>
     </section>
@@ -80,19 +85,14 @@ function HomeScreen() {
         </div>
 
         <select className="languageSelect" defaultValue="RU">
-          <option value="EN">EN</option>
-          <option value="ES">ES</option>
-          <option value="RU">RU</option>
-          <option value="UK">UK</option>
-          <option value="CS">CS</option>
-          <option value="PL">PL</option>
-          <option value="IT">IT</option>
-          <option value="DE">DE</option>
-          <option value="AR">AR</option>
-          <option value="HI">HI</option>
+          {languages.map((lang) => (
+            <option value={lang} key={lang}>
+              {lang}
+            </option>
+          ))}
         </select>
 
-        <button className="iconBtn">
+        <button className="iconBtn" aria-label="Notifications">
           <Bell size={20} />
         </button>
       </header>
@@ -114,16 +114,16 @@ function HomeScreen() {
       <section className="searchBox">
         <div className="searchInput">
           <input placeholder="Город, район или адрес" />
-          <Search size={20} />
+          <Search size={23} strokeWidth={3} />
         </div>
 
         <div className="actions">
           <button>
-            <SlidersHorizontal size={17} />
+            <SlidersHorizontal size={18} strokeWidth={3} />
             Фильтры
           </button>
           <button>
-            <MapPin size={17} />
+            <MapPin size={18} strokeWidth={3} />
             На карте
           </button>
         </div>
@@ -175,138 +175,139 @@ function HomeScreen() {
         .splash {
           position: fixed;
           inset: 0;
-          z-index: 50;
+          z-index: 100;
           display: flex;
           align-items: center;
           justify-content: center;
           background: #ffffff;
-          animation: splashFadeOut 0.35s ease forwards;
-          animation-delay: 2.12s;
+          animation: splashExit 0.45s ease forwards;
+          animation-delay: 2.2s;
         }
 
-        .logoBox {
+        .splashLogo {
           position: relative;
-          width: 190px;
-          height: 190px;
+          width: 210px;
+          height: 210px;
           display: flex;
           align-items: center;
           justify-content: center;
         }
 
-        .logoSvg {
+        .squareSvg {
           position: absolute;
           inset: 0;
           width: 100%;
           height: 100%;
         }
 
-        .drawnSquare {
+        .squarePath {
           fill: none;
           stroke: #080808;
-          stroke-width: 10;
+          stroke-width: 13;
           stroke-linecap: round;
           stroke-linejoin: round;
-          stroke-dasharray: 770;
-          stroke-dashoffset: 770;
-          animation: drawBorder 0.55s ease-in-out forwards;
+          stroke-dasharray: 760;
+          stroke-dashoffset: 760;
+          animation: drawLine 0.55s ease-in-out forwards;
         }
 
-        .letters {
+        .splashLetters {
           position: relative;
-          z-index: 2;
+          z-index: 3;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 8px;
-          margin-top: 18px;
-          font-size: 86px;
-          font-weight: 900;
-          letter-spacing: -8px;
+          gap: 5px;
+          margin-top: 23px;
+          font-size: 92px;
+          font-weight: 950;
+          letter-spacing: -9px;
           color: #080808;
         }
 
-        .letter {
-          display: inline-block;
+        .drawLetter {
           opacity: 0;
-          animation: letterPop 0.32s cubic-bezier(0.2, 1.4, 0.4, 1) forwards;
+          display: inline-block;
+          transform-origin: center bottom;
+          animation: letterDraw 0.36s cubic-bezier(0.22, 1.3, 0.36, 1) forwards;
         }
 
-        .letterI1 {
+        .iOne {
           animation-delay: 0.62s;
         }
 
-        .letterZ {
-          animation-delay: 1.02s;
+        .zLetter {
+          animation-delay: 1s;
         }
 
-        .letterI2 {
-          animation-delay: 1.42s;
+        .iTwo {
+          animation-delay: 1.38s;
         }
 
         .roofSvg {
           position: absolute;
-          top: 30px;
-          left: 30px;
-          width: 130px;
-          height: 70px;
-          z-index: 3;
+          top: 28px;
+          left: 24px;
+          width: 162px;
+          height: 76px;
+          z-index: 4;
         }
 
-        .roofPath {
+        .roofDraw {
           fill: none;
           stroke: #080808;
-          stroke-width: 14;
+          stroke-width: 15;
           stroke-linecap: round;
           stroke-linejoin: round;
           stroke-dasharray: 180;
           stroke-dashoffset: 180;
-          animation: drawRoof 0.42s ease-in-out forwards;
-          animation-delay: 1.82s;
+          animation: drawLine 0.43s ease-in-out forwards;
+          animation-delay: 1.76s;
         }
 
         .app {
           min-height: 100vh;
           max-width: 480px;
           margin: 0 auto;
-          padding: 18px 16px 92px;
-          animation: homeAppear 0.5s ease forwards;
-          animation-delay: 2.25s;
+          padding: 18px 16px 96px;
           opacity: 0;
+          animation: appEnter 0.5s ease forwards;
+          animation-delay: 2.28s;
         }
 
         .topBar {
           display: grid;
-          grid-template-columns: 52px 1fr 44px;
-          gap: 10px;
+          grid-template-columns: 58px 1fr 52px;
+          gap: 12px;
           align-items: center;
-          margin-bottom: 24px;
+          margin-bottom: 26px;
         }
 
         .miniLogo {
           position: relative;
-          width: 48px;
-          height: 48px;
-          border: 2px solid #080808;
-          border-radius: 10px;
+          width: 54px;
+          height: 54px;
+          border: 3px solid #080808;
+          border-radius: 16px;
           display: flex;
           align-items: center;
           justify-content: center;
           background: #ffffff;
-          box-shadow: 4px 4px 0 #00ff85;
+          box-shadow: 6px 6px 0 #00ff85;
         }
 
         .miniLogo span {
-          font-size: 21px;
-          font-weight: 900;
-          letter-spacing: -2px;
+          font-size: 24px;
+          font-weight: 950;
+          letter-spacing: -3px;
         }
 
         .miniLogo svg {
           position: absolute;
-          top: 3px;
-          left: 7px;
-          width: 34px;
-          height: 20px;
+          top: 6px;
+          left: 9px;
+          width: 36px;
+          height: 22px;
         }
 
         .miniLogo path {
@@ -319,27 +320,28 @@ function HomeScreen() {
 
         .languageSelect {
           width: 100%;
-          height: 44px;
-          border: 2px solid #080808;
-          border-radius: 16px;
+          height: 54px;
+          border: 3px solid #080808;
+          border-radius: 22px;
           background: #d8ff00;
-          font-weight: 900;
+          font-size: 17px;
+          font-weight: 950;
           text-align: center;
-          padding: 0 12px;
+          padding: 0 16px;
           outline: none;
-          box-shadow: 3px 3px 0 #080808;
+          box-shadow: 6px 6px 0 #080808;
         }
 
         .iconBtn {
-          width: 44px;
-          height: 44px;
-          border-radius: 16px;
-          border: 2px solid #080808;
+          width: 50px;
+          height: 50px;
+          border-radius: 18px;
+          border: 3px solid #080808;
           background: #ffffff;
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 3px 3px 0 #ff4fd8;
+          box-shadow: 5px 5px 0 #ff4fd8;
         }
 
         .hero {
@@ -348,150 +350,157 @@ function HomeScreen() {
 
         .eyebrow {
           display: inline-flex;
-          padding: 8px 12px;
-          margin: 0 0 12px;
-          border: 2px solid #080808;
+          padding: 10px 16px;
+          margin: 0 0 16px;
+          border: 3px solid #080808;
           border-radius: 999px;
           background: #d8ff00;
-          font-size: 13px;
-          font-weight: 800;
+          font-size: 16px;
+          font-weight: 950;
+          box-shadow: 4px 4px 0 #080808;
         }
 
         h1 {
           margin: 0;
-          font-size: 38px;
-          line-height: 0.95;
-          letter-spacing: -2px;
+          font-size: 48px;
+          line-height: 0.9;
+          letter-spacing: -3px;
           color: #071b46;
         }
 
         .subtitle {
-          margin: 14px 0 0;
-          color: #4e5968;
-          font-size: 15px;
-          line-height: 1.45;
+          margin: 20px 0 0;
+          color: #5f6877;
+          font-size: 21px;
+          line-height: 1.35;
+          font-weight: 600;
         }
 
         .tabs {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 8px;
-          margin: 20px 0 14px;
+          gap: 10px;
+          margin: 28px 0 18px;
         }
 
         .tab {
-          border: 2px solid #080808;
-          border-radius: 16px;
-          padding: 12px 8px;
+          border: 3px solid #080808;
+          border-radius: 22px;
+          padding: 16px 8px;
           background: #ffffff;
-          font-weight: 800;
+          font-size: 18px;
+          font-weight: 950;
         }
 
         .tab.active {
           background: #080808;
           color: #ffffff;
-          box-shadow: 4px 4px 0 #00d4ff;
+          box-shadow: 7px 7px 0 #00d4ff;
         }
 
         .searchBox {
-          border: 2px solid #080808;
-          border-radius: 24px;
-          padding: 12px;
-          box-shadow: 6px 6px 0 #f2f2f2;
+          border: 3px solid #080808;
+          border-radius: 28px;
+          padding: 14px;
+          box-shadow: 8px 8px 0 #f1f1f1;
           background: #ffffff;
         }
 
         .searchInput {
-          height: 52px;
-          border: 2px solid #080808;
-          border-radius: 18px;
+          height: 62px;
+          border: 3px solid #080808;
+          border-radius: 24px;
           display: flex;
           align-items: center;
-          padding: 0 14px;
-          gap: 10px;
+          padding: 0 18px;
+          gap: 12px;
         }
 
         .searchInput input {
           flex: 1;
+          min-width: 0;
           border: 0;
           outline: 0;
-          font-size: 15px;
+          font-size: 20px;
           background: transparent;
         }
 
         .actions {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 10px;
-          margin-top: 12px;
+          gap: 14px;
+          margin-top: 14px;
         }
 
         .actions button {
-          border: 2px solid #080808;
-          border-radius: 16px;
-          padding: 12px;
+          border: 3px solid #080808;
+          border-radius: 22px;
+          padding: 17px 8px;
           background: #f7f7f7;
-          font-weight: 800;
+          font-size: 17px;
+          font-weight: 950;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 7px;
+          gap: 8px;
         }
 
         .sectionHead {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin: 24px 0 12px;
+          margin: 30px 0 14px;
         }
 
         .sectionHead h2 {
           margin: 0;
-          font-size: 20px;
+          font-size: 27px;
           color: #071b46;
+          letter-spacing: -1px;
         }
 
         .sectionHead span {
-          font-size: 13px;
-          font-weight: 800;
+          font-size: 17px;
+          font-weight: 950;
           color: #1677ff;
         }
 
         .cards {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 10px;
+          gap: 12px;
         }
 
         .card {
           overflow: hidden;
-          border: 2px solid #080808;
-          border-radius: 20px;
+          border: 3px solid #080808;
+          border-radius: 22px;
           background: #ffffff;
-          box-shadow: 4px 4px 0 #d8ff00;
+          box-shadow: 5px 5px 0 #d8ff00;
         }
 
         .card img {
           width: 100%;
-          height: 92px;
+          height: 118px;
           object-fit: cover;
           display: block;
         }
 
         .card div {
-          padding: 9px;
+          padding: 11px;
         }
 
         .card h3 {
-          margin: 0 0 4px;
-          font-size: 14px;
+          margin: 0 0 5px;
+          font-size: 18px;
+          letter-spacing: -0.5px;
         }
 
         .card p {
           margin: 0;
-          font-size: 11px;
+          font-size: 14px;
           color: #4e5968;
-          font-weight: 700;
+          font-weight: 900;
         }
 
         .bottomNav {
@@ -500,15 +509,15 @@ function HomeScreen() {
           bottom: 12px;
           transform: translateX(-50%);
           width: min(450px, calc(100% - 24px));
-          height: 72px;
-          border: 2px solid #080808;
-          border-radius: 26px;
+          height: 74px;
+          border: 3px solid #080808;
+          border-radius: 28px;
           background: #ffffff;
           display: grid;
-          grid-template-columns: 1fr 1fr 72px 1fr 1fr;
+          grid-template-columns: 1fr 1fr 74px 1fr 1fr;
           align-items: center;
           padding: 8px;
-          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.16);
         }
 
         .bottomNav button {
@@ -519,7 +528,7 @@ function HomeScreen() {
           align-items: center;
           gap: 3px;
           font-size: 10px;
-          font-weight: 800;
+          font-weight: 900;
           color: #5f6877;
         }
 
@@ -531,13 +540,64 @@ function HomeScreen() {
           width: 58px;
           height: 58px;
           margin: 0 auto;
-          border: 2px solid #080808;
+          border: 3px solid #080808;
           border-radius: 22px;
           background: #00ff85;
           color: #080808;
           font-size: 34px;
           line-height: 1;
           box-shadow: 4px 4px 0 #080808;
+        }
+
+        @keyframes drawLine {
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
+
+        @keyframes letterDraw {
+          0% {
+            opacity: 0;
+            transform: translateY(18px) scale(0.75);
+            filter: blur(8px);
+          }
+          65% {
+            opacity: 1;
+            transform: translateY(-4px) scale(1.08);
+            filter: blur(0);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+          }
+        }
+
+        @keyframes splashExit {
+          0% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          75% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: scale(1.06);
+            pointer-events: none;
+          }
+        }
+
+        @keyframes appEnter {
+          from {
+            opacity: 0;
+            transform: translateY(18px) scale(0.98);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
         }
       `}</style>
     </section>
